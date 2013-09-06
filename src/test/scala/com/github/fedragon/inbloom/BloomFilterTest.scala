@@ -7,38 +7,34 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class BloomFilterTest extends FunSuite with BeforeAndAfter {
   
-  var initial: BloomFilter = _
+  var empty: BloomFilter = _
+  var dag: BloomFilter = _
 
   before {
-    initial = new BloomFilter()
+    empty = new BloomFilter(200)
+    dag = empty.add("Dag")
   }
 
   test("should initially contain only zeros") {
-    assert(initial.bits.forall(b => b == 0))
-  }
-
-  test("hashifying Hello should give expected results") {
-    assert(new Hashify(20, 4).apply("Hello") === List(0, 5, 10, 15))
+    assert(empty.bits.forall(b => b == 0))
   }
 
   test("adding an element should return an updated array") {
-    val hello = initial.add("Hello")
-    assert(initial.equals(hello) === false)
+    assert(empty.equals(dag) === false)
+    assert(dag.bits.exists(n => n == 1) === true)
   }
 
   test("querying an existing element should return true") {
-    val hello = initial.add("Hello")
-    assert(hello.query("Hello") === true)
+    assert(dag.query("Dag") === true)
   }
 
   test("querying a non-existing element should return false") {
-    val hello = initial.add("Hello")
-    assert(hello.query("Dag") === false)
+    assert(dag.query("Hello") === false)
   }
 
   test("querying a non-existing element might as well return true!") {
     val hello = 
-      new BloomFilter(20, 4)
+      new BloomFilter(20)
         .add("Hello")
     assert(hello.query("Ciao") === true)
   }
