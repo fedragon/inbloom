@@ -1,12 +1,12 @@
 package com.github.fedragon.inbloom
 
-class CountingFilter private[inbloom] (b: Vector[Int], r: Int, h: Hashify) extends BaseFilter(b, r, h) {
+class CountingFilter (b: Vector[Int], h: Hashify) extends BaseFilter(b, h) {
 
-  private[inbloom] def this(bits: Vector[Int], ratio: Int) = 
-    this(bits, ratio, new Hashify(bits.size, ratio))
+  def this(bits: Vector[Int], ratio: Int) = 
+    this(bits, new Hashify(bits.size, ratio))
 
   def this(size: Int) = {
-    this((0 until size).map(_ => 0).toVector, 4, new Hashify(size, 4))    
+    this((0 until size).map(_ => 0).toVector, new Hashify(size, BaseFilter.DefaultRatio))    
   }
 
   def add(value: String): CountingFilter = {
@@ -14,7 +14,7 @@ class CountingFilter private[inbloom] (b: Vector[Int], r: Int, h: Hashify) exten
     def add0(index: Int, vector: Vector[Int]) = 
       vector.updated(index, vector(index) + 1)
 
-    new CountingFilter(update(value, add0), ratio)
+    new CountingFilter(update(value, add0), hashify)
   }
 
   def delete(value: String): CountingFilter = {
@@ -27,6 +27,6 @@ class CountingFilter private[inbloom] (b: Vector[Int], r: Int, h: Hashify) exten
       else vector
     }
 
-    new CountingFilter(update(value, delete0), ratio)
+    new CountingFilter(update(value, delete0), hashify)
   }
 }

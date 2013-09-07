@@ -1,7 +1,16 @@
 package com.github.fedragon.inbloom
 
-class BaseFilter(val bits: Vector[Int], val ratio: Int, val hashify: Hashify) {
-  
+object BaseFilter {
+  val DefaultRatio: Int = 4
+}
+
+abstract class BaseFilter (val bits: Vector[Int], val hashify: Hashify) {
+
+  require(bits.size > 0)
+  require(hashify != null)
+  require(hashify.ratio > 0)
+  require(bits.size >= hashify.ratio)
+
   def query(value: String) = 
     hashify(value)
       .map(hash => bits(hash))
