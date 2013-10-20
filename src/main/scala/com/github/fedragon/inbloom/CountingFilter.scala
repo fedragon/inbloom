@@ -7,14 +7,17 @@ class CountingFilter (b: Vector[Int]) extends BloomFilter(b) {
   }
 
   override def query(value: String) = 
-    hashify(value)
-      .map(hash => bits(hash))
-        .forall(b => b > 0)
+    hashify(value).map(hash => bits(hash)).forall(b => b > 0)
 
   override def add(value: String): CountingFilter = {
 
-    def add0(index: Int, vector: Vector[Int]) = 
-      vector.updated(index, vector(index) + 1)
+    def add0(index: Int, vector: Vector[Int]) = {
+      val current = vector(index)
+
+      if(current < Int.MaxValue)
+        vector.updated(index, vector(index) + 1)
+      else vector
+    }
 
     new CountingFilter(update(value, add0))
   }

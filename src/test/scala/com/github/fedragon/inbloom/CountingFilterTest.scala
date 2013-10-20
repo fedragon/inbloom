@@ -24,8 +24,7 @@ class CountingFilterTest extends FunSuite with BeforeAndAfter {
   }
 
   test("when adding more than one element, some values might be bigger than 1") {
-    val initial = 
-      new CountingFilter(20)
+    val initial = new CountingFilter(20)
     val hello = initial.add("Hello")
     val ciao = hello.add("Ciao")
 
@@ -34,8 +33,7 @@ class CountingFilterTest extends FunSuite with BeforeAndAfter {
   }
 
   test("deleting an element should decrease its associated positions") {
-    val initial = 
-      new CountingFilter(20)
+    val initial = new CountingFilter(20)
     val hello = initial.add("Hello")
     val ciao = hello.add("Ciao")
     
@@ -47,6 +45,10 @@ class CountingFilterTest extends FunSuite with BeforeAndAfter {
     assert(dag.query("Dag") === true)
   }
 
+  test("querying a non-existing element should return false") {
+    assert(dag.query("Hello") === false)
+  }
+
   test("querying should work even when some positions are bigger than 1") {
     val ciao = new CountingFilter(20).add("Hello").add("Ciao")
 
@@ -54,14 +56,8 @@ class CountingFilterTest extends FunSuite with BeforeAndAfter {
     assert(ciao.query("Dag") === false)
   }
 
-  test("querying a non-existing element should return false") {
-    assert(dag.query("Hello") === false)
-  }
-
   test("querying a non-existing element might as well return true!") {
-    val hello = 
-      new CountingFilter(20)
-        .add("Hello")
+    val hello = new CountingFilter(20).add("Hello")
     assert(hello.query("Ciao") === true)
   }
 }

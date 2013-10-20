@@ -33,9 +33,17 @@ class BloomFilterTest extends FunSuite with BeforeAndAfter {
   }
 
   test("querying a non-existing element might as well return true!") {
-    val hello = 
-      new BloomFilter(20)
-        .add("Hello")
+    val hello = new BloomFilter(20).add("Hello")
     assert(hello.query("Ciao") === true)
+  }
+
+  test("stacking Hashifiers should change results") {
+    trait ZeroHashifier extends Hashifier {
+      override def hashify(value: String): List[Int] = List(0)
+    }
+
+    val filter = new BloomFilter(20) with ZeroHashifier
+    val hello = filter.add("Hello")
+    assert(hello.query("Hello") === false)
   }
 }
