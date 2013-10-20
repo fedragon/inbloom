@@ -1,12 +1,12 @@
 package com.github.fedragon.inbloom
 
-trait Hashifier[B <: BaseFilter] {
+trait Hashifier[B <: BloomFilter] {
   self: B =>
 
     def hashify(value: String): List[Int]
 }
 
-trait DefaultHashifier[B <: BaseFilter] extends Hashifier[B] {
+trait DefaultHashifier[B <: BloomFilter] extends Hashifier[B] {
   self: B =>
 
     val Ratio: Int = 4

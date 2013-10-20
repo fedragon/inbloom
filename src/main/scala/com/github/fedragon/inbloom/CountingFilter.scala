@@ -1,6 +1,6 @@
 package com.github.fedragon.inbloom
 
-class CountingFilter (b: Vector[Int]) extends BaseFilter(b) {
+class CountingFilter (b: Vector[Int]) extends BloomFilter(b) {
 
   def this(size: Int) = {
     this((0 until size).map(_ => 0).toVector)
@@ -11,7 +11,7 @@ class CountingFilter (b: Vector[Int]) extends BaseFilter(b) {
       .map(hash => bits(hash))
         .forall(b => b > 0)
 
-  def add(value: String): CountingFilter = {
+  override def add(value: String): CountingFilter = {
 
     def add0(index: Int, vector: Vector[Int]) = 
       vector.updated(index, vector(index) + 1)
