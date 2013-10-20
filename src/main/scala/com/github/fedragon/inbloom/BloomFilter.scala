@@ -1,19 +1,19 @@
 package com.github.fedragon.inbloom
 
-class BloomFilter (val bits: Vector[Int]) extends Hashifier with DefaultHashifier {
+class BloomFilter protected(val bits: Vector[Int]) extends Hashifier with DefaultHashifier {
   require(bits.size > 0)
 
   def this(size: Int) = {
     this((0 until size).map(_ => 0).toVector)
   }
 
-  def query(value: String) = {
+  def query(value: String): Boolean = {
     hashify(value).map(hash => bits(hash)).forall(b => b == 1)
   }
 
   def add(value: String): BloomFilter = {
 
-    def add0(index: Int, vector: Vector[Int]) = {
+    def addFunc(index: Int, vector: Vector[Int]) = {
       val current = vector(index)
 
       if(current == 0)
@@ -21,20 +21,20 @@ class BloomFilter (val bits: Vector[Int]) extends Hashifier with DefaultHashifie
       else vector
     }
 
-    new BloomFilter(update(value, add0))
+    new BloomFilter(updateBits(value, addFunc))
   }
 
-  private[inbloom] def update(value: String, func: (Int, Vector[Int]) => Vector[Int]): Vector[Int] = {
+  protected def updateBits(value: String, func: (Int, Vector[Int]) => Vector[Int]): Vector[Int] = {
 
     @scala.annotation.tailrec
-    def update0(hashes: List[Int], result: Vector[Int]): Vector[Int] = {
+    def update(hashes: List[Int], result: Vector[Int]): Vector[Int] = {
       hashes match {
         case Nil => result
         case head :: tail => 
-          update0(tail, func(head, result))
+          update(tail, func(head, result))
       }
     }
 
-    update0(hashify(value), bits)
+    update(hashify(value), bits)
   }
 }
