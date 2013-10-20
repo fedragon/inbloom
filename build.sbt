@@ -9,6 +9,7 @@ scalacOptions ++= Seq("-deprecation")
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
  
 libraryDependencies ++= Seq (
-  "org.scalatest" % "scalatest_2.10" % "2.0.M8b" % "test",
+  "org.scalatest" % "scalatest_2.10" % "2.0.RC2" % "test",
+  "org.mockito" % "mockito-core" % "1.9.5" % "test",
   "junit" % "junit" % "4.10" % "test"
 )
