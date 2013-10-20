@@ -1,12 +1,9 @@
 package com.github.fedragon.inbloom
 
-class BloomFilter (b: Vector[Int], h: Hashify) extends BaseFilter(b, h) {
-
-  def this(bits: Vector[Int], ratio: Int) = 
-    this(bits, new Hashify(bits.size, ratio))
+class BloomFilter (b: Vector[Int]) extends BaseFilter(b) {
 
   def this(size: Int) = {
-    this((0 until size).map(_ => 0).toVector, new Hashify(size, BaseFilter.DefaultRatio))    
+    this((0 until size).map(_ => 0).toVector)
   }
 
   def add(value: String): BloomFilter = {
@@ -19,6 +16,6 @@ class BloomFilter (b: Vector[Int], h: Hashify) extends BaseFilter(b, h) {
       else vector
     }
 
-    new BloomFilter(update(value, add0), hashify)
+    new BloomFilter(update(value, add0))
   }
 }

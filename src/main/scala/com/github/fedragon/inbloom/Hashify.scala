@@ -1,13 +1,22 @@
 package com.github.fedragon.inbloom
 
-class Hashify(val size: Int, val ratio: Int) {
+trait Hashifier[B <: BaseFilter] {
+  self: B =>
 
-  def apply(value: String): List[Int] = {
-    val modulo = size / ratio
-    val hash = value.hashCode % modulo
+    def hashify(value: String): List[Int]
+}
 
-    (0 until ratio).map {
-      n => hash + modulo * n
-    }.toList
-  }
+trait DefaultHashifier[B <: BaseFilter] extends Hashifier[B] {
+  self: B =>
+
+    val Ratio: Int = 4
+
+    def hashify(value: String): List[Int] = {
+      val modulo = self.bits.size / Ratio
+      val hash = value.hashCode % modulo
+
+      (0 until Ratio).map {
+        n => hash + modulo * n
+      }.toList
+    }
 }

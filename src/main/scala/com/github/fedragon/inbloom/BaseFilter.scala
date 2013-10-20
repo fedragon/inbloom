@@ -1,15 +1,8 @@
 package com.github.fedragon.inbloom
 
-object BaseFilter {
-  val DefaultRatio: Int = 4
-}
-
-abstract class BaseFilter (val bits: Vector[Int], val hashify: Hashify) {
+abstract class BaseFilter (val bits: Vector[Int]) extends Hashifier[BaseFilter] with DefaultHashifier[BaseFilter] {
 
   require(bits.size > 0)
-  require(hashify != null)
-  require(hashify.ratio > 0)
-  require(bits.size >= hashify.ratio)
 
   def query(value: String) = 
     hashify(value)
