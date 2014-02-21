@@ -6,7 +6,7 @@ trait Hashifier {
 }
 
 trait DefaultHashifier extends Hashifier {
-  val Ratio: Int = if(bits.size >= 4) 4 else 1
+  val Ratio: Int = 4
 
   override def hashify(value: String): List[Int] = {
     val modulo = bits.size / Ratio

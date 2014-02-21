@@ -11,7 +11,7 @@ class BloomFilterTest extends FunSuite with BeforeAndAfter {
   var dag: BloomFilter = _
 
   before {
-    empty = new BloomFilter(200)
+    empty = new BloomFilter(1)
     dag = empty.add("Dag")
   }
 
@@ -29,12 +29,12 @@ class BloomFilterTest extends FunSuite with BeforeAndAfter {
   }
 
   test("querying a non-existing element should return false") {
-    assert(dag.contains("Hello") === false)
+    assert(dag.contains("Ciao") === false)
   }
 
   test("querying a non-existing element might as well return true!") {
-    val hello = new BloomFilter(20).add("Hello")
-    assert(hello.contains("Ciao") === true)
+    val hello = empty.add("Hello")
+    assert(hello.contains("Dag") === true)
   }
 
   test("stacking Hashifiers should change results") {
@@ -42,7 +42,7 @@ class BloomFilterTest extends FunSuite with BeforeAndAfter {
       override def hashify(value: String): List[Int] = List(0)
     }
 
-    val filter = new BloomFilter(20) with ZeroHashifier
+    val filter = new BloomFilter(1) with ZeroHashifier
     val hello = filter.add("Hello")
     assert(hello.contains("Hello") === false)
   }

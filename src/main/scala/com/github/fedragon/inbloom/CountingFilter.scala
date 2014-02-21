@@ -1,13 +1,10 @@
 package com.github.fedragon.inbloom
 
-class CountingFilter private[inbloom](b: Vector[Int]) extends BloomFilter(b) {
+class CountingFilter private[inbloom](bits: Vector[Int]) extends BloomFilter(bits) {
 
   def this(size: Int) = {
-    this((0 until size).map(_ => 0).toVector)
+    this((0 until size * 32).map(_ => 0).toVector)
   }
-
-  override def contains(value: String) = 
-    hashify(value).map(hash => bits(hash)).forall(b => b > 0)
 
   override def add(value: String): CountingFilter = {
 
