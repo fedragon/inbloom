@@ -1,13 +1,12 @@
 package com.github.fedragon.inbloom
 
-class BloomFilter protected(val bits: Vector[Int]) extends Hashifier with DefaultHashifier {
-  require(bits.size > 0)
+class BloomFilter private[inbloom](val bits: Vector[Int]) extends Hashifier with DefaultHashifier {
 
   def this(size: Int) = {
     this((0 until size).map(_ => 0).toVector)
   }
 
-  def query(value: String): Boolean = {
+  def contains(value: String): Boolean = {
     hashify(value).map(hash => bits(hash)).forall(b => b == 1)
   }
 
@@ -16,8 +15,7 @@ class BloomFilter protected(val bits: Vector[Int]) extends Hashifier with Defaul
     def addFunc(index: Int, vector: Vector[Int]) = {
       val current = vector(index)
 
-      if(current == 0)
-        vector.updated(index, 1)
+      if(current == 0) vector.updated(index, 1)
       else vector
     }
 

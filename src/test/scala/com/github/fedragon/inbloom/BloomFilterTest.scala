@@ -25,16 +25,16 @@ class BloomFilterTest extends FunSuite with BeforeAndAfter {
   }
 
   test("querying an existing element should return true") {
-    assert(dag.query("Dag") === true)
+    assert(dag.contains("Dag") === true)
   }
 
   test("querying a non-existing element should return false") {
-    assert(dag.query("Hello") === false)
+    assert(dag.contains("Hello") === false)
   }
 
   test("querying a non-existing element might as well return true!") {
     val hello = new BloomFilter(20).add("Hello")
-    assert(hello.query("Ciao") === true)
+    assert(hello.contains("Ciao") === true)
   }
 
   test("stacking Hashifiers should change results") {
@@ -44,6 +44,6 @@ class BloomFilterTest extends FunSuite with BeforeAndAfter {
 
     val filter = new BloomFilter(20) with ZeroHashifier
     val hello = filter.add("Hello")
-    assert(hello.query("Hello") === false)
+    assert(hello.contains("Hello") === false)
   }
 }
