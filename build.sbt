@@ -2,12 +2,10 @@ name := "inbloom"
 
 version := "1.0.0"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.3"
 
-scalacOptions ++= Seq("-deprecation")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfuture", "-Xlint")
 
-resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
- 
 libraryDependencies ++= Seq (
 	"org.scalaz" %% "scalaz-core" % "7.0.5",
   "org.scalatest" %% "scalatest" % "2.0" % "test",
